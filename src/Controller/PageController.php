@@ -110,5 +110,24 @@ final class PageController extends AbstractController
                 'contacto' => null
             ]);
     }
+
+    #[Route('/contacto/delete/{nombre}', name: 'modificar_contacto')]
+    public function delete(ManagerRegistry $doctrine,$nombre): Response{
+        $entityManager = $doctrine->getManager();
+        $repositorio = $doctrine->getRepository(Contacto::class);
+        $contacto = $repositorio->find($nombre);
+        if ($contacto){
+            try {
+                $entityManager->remove($contacto);
+                $entityManager->flush();
+                return new Response("Contacto eliminado correctamente");
+            } catch (\Exception $e) {
+                return new Response("Error al eliminar.");
+            }   
+        } else 
+            return $this->render('ficha_contacto.html.twig', [
+                'contacto' => null
+            ]);
+    }
 }
      

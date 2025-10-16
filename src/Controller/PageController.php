@@ -10,6 +10,8 @@ use App\Entity\Contacto;
 use App\Entity\Provincia;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\ContactoRepository;
+use App\Form\ContactoFormType;
+use Symfony\Component\HttpFoundation\Request;
 
 
 final class PageController extends AbstractController
@@ -22,7 +24,7 @@ final class PageController extends AbstractController
 
         2 => ["nombre" => "Ana López", "telefono" => "58958448", "email" => "anita@ieselcaminas.org"],
 
-        5 => ["nombre" => "Mario Montero", "telefono" => "5326824", "email" => "mario.mont@ieselcaminas.org"],
+        5 => ["nombre" => "Sergio Montero", "telefono" => "5326824", "email" => "mario.mont@ieselcaminas.org"],
 
         7 => ["nombre" => "Laura Martínez", "telefono" => "42898966", "email" => "lm2000@ieselcaminas.org"],
 
@@ -67,13 +69,13 @@ final class PageController extends AbstractController
 
     
 
-    #[Route('/contacto/{nombre?Juan Pérez}', name: 'ficha_contacto')]
+    #[Route('/contacto/{id}', name: 'ficha_contacto', requirements: ['id' => '\d+'])]
 
-    public function ficha(ManagerRegistry $doctrine, $nombre): Response{
+    public function ficha(ManagerRegistry $doctrine, $id): Response{
         $repositorio = $doctrine->getRepository(Contacto::class);
 
         //Si no existe el elemento con dicha clave devolvemos null
-        $contacto = $repositorio->find($nombre);
+        $contacto = $repositorio->find($id);
 
         return $this->render('ficha_contacto.html.twig', [
         'contacto' => $contacto
@@ -112,7 +114,7 @@ final class PageController extends AbstractController
             ]);
     }
 
-    #[Route('/contacto/delete/{nombre}', name: 'modificar_contacto')]
+    #[Route('/contacto/delete/{nombre}', name: 'eliminar_contacto')]
     public function delete(ManagerRegistry $doctrine,$nombre): Response{
         $entityManager = $doctrine->getManager();
         $repositorio = $doctrine->getRepository(Contacto::class);
@@ -152,5 +154,26 @@ final class PageController extends AbstractController
             'contacto' => $contacto
             ]);
     }
+
+    #[Route('/contacto/nuevo', name: 'nuevo')]
+    public function nuevo(ManagerRegistry $doctrine, Request $request) {
+        $contacto = new Contacto();
+        $formulario = $this->createForm(ContactoFormType::class, $contacto);
+        $formulario->handleRequest($request);
+
+        if ($formulario->isSubmitted() && $formulario->isValid()) {
+            $contacto = $formulario->getData();
+            
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($contacto);
+            $entityManager->flush();
+            return $this->redirectToRoute('ficha_contacto', ["id" => $contacto->getId()]);
+        }
+        return $this->render('nuevo.html.twig', array(
+            'formulario' => $formulario->createView()
+        ));
+    }
+
+
 }
      

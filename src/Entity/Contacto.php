@@ -5,24 +5,32 @@ namespace App\Entity;
 use App\Repository\ContactoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-
 #[ORM\Entity(repositoryClass: ContactoRepository::class)]
 class Contacto
 {
     #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
+
     #[ORM\Column(length: 255)]
     private ?string $nombre = null;
 
     #[ORM\Column(length: 255)]
-    private ?int $telefono = null;
+    private ?string $telefono = null;
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Provincia $provincia = null;
 
+    // Getter y setter para id (no es necesario el setter setId)
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getNombre(): ?string
     {
@@ -32,7 +40,6 @@ class Contacto
     public function setNombre(string $nombre): static
     {
         $this->nombre = $nombre;
-
         return $this;
     }
 
@@ -41,10 +48,9 @@ class Contacto
         return $this->telefono;
     }
 
-    public function setTelefono(string $telefono): static
+    public function setTelefono(int $telefono): static
     {
         $this->telefono = $telefono;
-
         return $this;
     }
 
@@ -56,7 +62,6 @@ class Contacto
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -68,7 +73,8 @@ class Contacto
     public function setProvincia(?Provincia $provincia): static
     {
         $this->provincia = $provincia;
-
         return $this;
     }
 }
+
+

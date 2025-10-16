@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Contacto;
+use App\Entity\Provincia;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\ContactoRepository;
 
@@ -79,7 +80,7 @@ final class PageController extends AbstractController
         ]);
     }
 
-    #[Route('/contactos/buscar/{texto}', name: 'buscar_contacto')]
+    #[Route('/contacto/buscar/{texto}', name: 'buscar_contacto')]
     public function buscar(ContactoRepository $repositorio, $texto): Response{
 
         //Si no existe el elemento con dicha clave devolvemos null
@@ -127,6 +128,28 @@ final class PageController extends AbstractController
         } else 
             return $this->render('ficha_contacto.html.twig', [
                 'contacto' => null
+            ]);
+    }
+
+    #[Route('/contacto/insertarConProvincia', name: 'insertar_con_provincia')]
+    public function insertarConProvincia(ManagerRegistry $doctrine): Response{
+        $entityManager = $doctrine->getManager();
+        $provincia = new Provincia();
+
+        $provincia->setNombre("Alicante");
+        $contacto = new Contacto();
+
+        $contacto->setNombre("Flavius");
+        $contacto->setTelefono("123456789");
+        $contacto->setEmail("amiwis@contacto.es");
+        $contacto->setProvincia($provincia);
+
+        $entityManager->persist($provincia);
+        $entityManager->persist($contacto);
+
+        $entityManager->flush();
+        return $this->render('ficha_contacto.html.twig', [
+            'contacto' => $contacto
             ]);
     }
 }

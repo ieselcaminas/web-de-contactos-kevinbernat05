@@ -174,6 +174,32 @@ final class PageController extends AbstractController
         ));
     }
 
+    #[Route('/contacto/editar/{codigo}', name: 'editar', requirements:["codigo"=>"\d+"])]
+    public function editar(ManagerRegistry $doctrine, Request $request, int $codigo) {
+    $repositorio = $doctrine->getRepository(Contacto::class);
+    //En este caso, los datos los obtenemos del repositorio de contactos
+    $contacto = $repositorio->find($codigo);
+    if ($contacto){
+        $formulario = $this->createForm(ContactoFormType::class, $contacto);
 
+        $formulario->handleRequest($request);
+
+        if ($formulario->isSubmitted() && $formulario->isValid()) {
+            //Esta parte es igual que en la ruta para insertar
+            $contacto = $formulario->getData();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($contacto);
+            $entityManager->flush();
+            return $this->redirectToRoute('ficha_contacto', ["codigo" => $contacto->getId()]);
+        }
+        return $this->render('nuevo.html.twig', array(
+            'formulario' => $formulario->createView()
+        ));
+        }else{
+        return $this->render('ficha_contacto.html.twig', [
+            'contacto' => NULL
+        ]);
+        }
+    }
 }
      

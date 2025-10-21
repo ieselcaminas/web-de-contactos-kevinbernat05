@@ -20,6 +20,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+
 class ContactoFormType extends AbstractType
 
 {
@@ -34,7 +36,7 @@ class ContactoFormType extends AbstractType
 
             ->add('telefono')
 
-            ->add('email')
+            ->add('email', EmailType::class, array('label' => 'Correo electrónico'))
 
             ->add('provincia', EntityType::class, [
 

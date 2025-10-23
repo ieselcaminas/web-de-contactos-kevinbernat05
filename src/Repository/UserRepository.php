@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 /**
  * @extends ServiceEntityRepository<User>
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, UserLoaderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -41,7 +41,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             'SELECT u
                 FROM App\Entity\User u
                 WHERE u.email = :query
-                OR u.username = :query' 
+                OR u.name = :query' 
         )
             ->setParameter('query', $usernameOrEmail)
             ->getOneOrNullResult();

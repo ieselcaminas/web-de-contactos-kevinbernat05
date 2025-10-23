@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Contactos</h1>
+
+<a href="{{ path('nuevo') }}">
+    <button>Crear nuevo contacto</button>
+</a>
+
+<table border="1" cellpadding="10" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for contacto in contactos %}
+        <tr>
+            <td>
+                <a href="{{ path('ficha_contacto', {'id': contacto.id}) }}">
+                    {{ contacto.nombre }}
+                </a>
+            </td>
+            <td>{{ contacto.email }}</td>
+            <td>{{ contacto.telefono }}</td>
+            <td>
+                <a href="{{ path('editar', {'codigo': contacto.id}) }}">
+                    <button>Editar</button>
+                </a>
+                <a href="{{ path('eliminar_contacto', {'id': contacto.id}) }}" 
+                   onclick="return confirm('¿Estás seguro de borrar este contacto?');">
+                    <button>Borrar</button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

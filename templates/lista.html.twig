@@ -1,42 +1,53 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Contactos{% endblock %}
+
 {% block body %}
-<h1>Contactos</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Contactos</h1>
 
-<a href="{{ path('nuevo') }}">
-    <button>Crear nuevo contacto</button>
-</a>
+    <div class="mb-3">
+        <a href="{{ path('nuevo') }}" class="btn btn-success">Crear nuevo contacto</a>
+    </div>
 
-<table border="1" cellpadding="10" cellspacing="0">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Teléfono</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for contacto in contactos %}
-        <tr>
-            <td>
-                <a href="{{ path('ficha_contacto', {'id': contacto.id}) }}">
-                    {{ contacto.nombre }}
-                </a>
-            </td>
-            <td>{{ contacto.email }}</td>
-            <td>{{ contacto.telefono }}</td>
-            <td>
-                <a href="{{ path('editar', {'codigo': contacto.id}) }}">
-                    <button>Editar</button>
-                </a>
-                <a href="{{ path('eliminar_contacto', {'id': contacto.id}) }}" 
-                   onclick="return confirm('¿Estás seguro de borrar este contacto?');">
-                    <button>Borrar</button>
-                </a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contacto in contactos %}
+                <tr>
+                    <td>
+                        <a href="{{ path('ficha_contacto', {'id': contacto.id}) }}">
+                            {{ contacto.nombre }}
+                        </a>
+                    </td>
+                    <td>{{ contacto.email }}</td>
+                    <td>{{ contacto.telefono }}</td>
+                    <td>
+                        <a href="{{ path('editar', {'codigo': contacto.id}) }}" class="btn btn-primary btn-sm me-1">
+                            Editar
+                        </a>
+                        <a href="{{ path('eliminar_contacto', {'id': contacto.id}) }}" 
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('¿Estás seguro de borrar este contacto?');">
+                            Borrar
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">No hay contactos disponibles.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

@@ -1,21 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-<h1>Bienvenido a la aplicación</h1>
+{% block title %}Bienvenido{% endblock %}
 
-<div style="margin-top:20px;">
+{% block body %}
+<div class="container mt-5 text-center">
+    <h1 class="mb-4">Bienvenido a la aplicación</h1>
+
     {% if app.user %}
-        <p>Hola, {{ app.user.username }}!</p>
-        <a href="{{ path('app_logout') }}">
-            <button>Cerrar sesión</button>
-        </a>
+        <p class="mb-3 fs-5">Hola, <strong>{{ app.user.username }}</strong>!</p>
+        <a href="{{ path('app_logout') }}" class="btn btn-danger btn-lg">Cerrar sesión</a>
     {% else %}
-        <a href="{{ path('app_login') }}">
-            <button>Login</button>
-        </a>
-        <a href="{{ path('app_register') }}">
-            <button>Register</button>
-        </a>
+        <a href="{{ path('app_login') }}" class="btn btn-primary btn-lg me-2">Login</a>
+        <a href="{{ path('app_register') }}" class="btn btn-success btn-lg">Register</a>
     {% endif %}
 </div>
 {% endblock %}

@@ -1,15 +1,10 @@
-{% extends 'base.html.twig'%}
-{% block title %}Datos del contacto{% endblock %}
-{% block body %}
-<ul>
-
-    <li><strong>{{ contacto.nombre }}</strong></li>
-
-    <li><strong>Teléfono</strong>: {{ contacto.telefono }}</li>
-    {% if contacto.provincia %}
-    <li><strong>Provincia: </strong> {{ contacto.provincia.nombre }}</li>
-    {% endif %}
-    <li><strong>E-mail</strong>: {{ contacto.email }}</li>
-
-</ul>
-{% endblock %}
+<div class="card mb-4" style="max-width: 400px;">
+    <div class="card-body">
+        <h5 class="card-title">{{ contacto.nombre }}</h5>
+        <p class="card-text"><strong>Teléfono:</strong> {{ contacto.telefono }}</p>
+        {% if contacto.provincia %}
+            <p class="card-text"><strong>Provincia:</strong> {{ contacto.provincia.nombre }}</p>
+        {% endif %}
+        <p class="card-text"><strong>E-mail:</strong> {{ contacto.email }}</p>
+    </div>
+</div>

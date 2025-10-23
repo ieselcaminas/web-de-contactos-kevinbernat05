@@ -3,20 +3,27 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+<div class="container mt-5" style="max-width: 500px;">
+    <h1 class="mb-4 text-center">Register</h1>
 
     {{ form_errors(registrationForm) }}
 
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.name, {
-            label: 'Name'
-        }) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        <div class="mb-3">
+            {{ form_row(registrationForm.name, { label: 'Name', attr: {class: 'form-control'} }) }}
+        </div>
+        <div class="mb-3">
+            {{ form_row(registrationForm.email, { attr: {class: 'form-control'} }) }}
+        </div>
+        <div class="mb-3">
+            {{ form_row(registrationForm.plainPassword, { label: 'Password', attr: {class: 'form-control'} }) }}
+        </div>
+        <div class="mb-3 form-check">
+            {{ form_row(registrationForm.agreeTerms, { attr: {class: 'form-check-input'} }) }}
+            <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">Agree Terms</label>
+        </div>
 
-        <button type="submit" class="btn">Register</button>
+        <button type="submit" class="btn btn-success w-100">Register</button>
     {{ form_end(registrationForm) }}
+</div>
 {% endblock %}
